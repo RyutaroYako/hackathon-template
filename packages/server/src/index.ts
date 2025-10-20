@@ -11,6 +11,9 @@ type Bindings = {
   FOO: string;
 };
 
+// Get BASE_PATH from environment variables
+const BASE_PATH = process.env.BASE_PATH || "";
+
 const app = new Hono<{
   Bindings: Bindings;
 }>();
@@ -27,19 +30,20 @@ app.use(
   }),
 );
 
-app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
+app.on(["POST", "GET"], `${BASE_PATH}/api/auth/**`, (c) => auth.handler(c.req.raw));
 
 app.use(
-  "/trpc/*",
+  `${BASE_PATH}/api/trpc/*`,
   trpcServer({
     router: appRouter,
+    endpoint: `${BASE_PATH}/api/trpc`,
     createContext: (_opts, hono) => {
       return createContext({ hono });
     },
   }),
 );
 
-app.get("/healthCheck", (c) => {
+app.get(`${BASE_PATH}/healthCheck`, (c) => {
   return c.text("OK");
 });
 

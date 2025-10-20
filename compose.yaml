@@ -2,6 +2,13 @@ services:
   app:
     image: oven/bun:1
     working_dir: /app
+    environment:
+      - HOST=${HOST}
+      - BASE_PATH=${BASE_PATH:-}
+      - VITE_SERVER_URL=http://${HOST:-localhost:3000}${BASE_PATH}/api
+      - VITE_BETTER_AUTH_URL=http://${HOST:-localhost:3000}${BASE_PATH}/api/auth
+      - BETTER_AUTH_URL=http://${HOST:-localhost:3000}${BASE_PATH}/api/auth
+      - CORS_ORIGIN=http://${HOST:-localhost:5173}
     volumes:
       - .:/app
       - /app/node_modules
@@ -33,3 +40,4 @@ services:
 
 volumes:
   db_data:
+  

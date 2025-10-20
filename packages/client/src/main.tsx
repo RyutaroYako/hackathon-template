@@ -48,6 +48,7 @@ export const trpcQueryUtils = createTRPCQueryUtils({
 
 const router = createRouter({
   routeTree,
+  basepath: (import.meta.env.BASE_URL as string || '/'),
   defaultPreload: "intent",
   context: { trpcQueryUtils },
   defaultPendingComponent: () => <Loader />,
